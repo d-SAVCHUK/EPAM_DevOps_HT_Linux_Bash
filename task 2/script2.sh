@@ -45,8 +45,8 @@ case $1 in
     awk '{print $4}' apache_log_DS.txt | awk -F: '{print $1}' | sort | uniq -c | sort -nr | head -1
     ;;
   "7")
-    echo "What search bots have accessed the site? (UA + IP)" #its not work!!!
-    awk '{print $1,$12}' apache_log_DS.txt | grep "bot" | sort | uniq -c | sort -nr
+    echo "What search bots have accessed the site? (UA + IP)" 
+    awk '{print $1,$14}' apache_log_DS.txt | grep "bot" | sort | uniq -c | sort -nr
     ;;
   *)
     echo "Invalid parameter. Please choose a number between 1 and 7."
