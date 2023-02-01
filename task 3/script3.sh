@@ -59,4 +59,3 @@ done
 echo "To run this script every minute add the following command to your crontab:"
 echo "* * * * * /path/to/script3.sh"
 echo "example: * * * * * /Desktop/script3.sh"
-# [NB] Crontab is not work properly on my laptop
