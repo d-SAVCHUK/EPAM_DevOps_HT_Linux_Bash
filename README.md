@@ -56,13 +56,13 @@ done
 ```
 ![screen](https://github.com/d-SAVCHUK/EPAM_DevOps_HT_Linux_Bash/blob/main/task%201/Screenshot.png)
 
-# Task 2. Using Apache log example create a script to answer the following questions::
+# Task 2. Using Apache log example create a script to answer the following questions:
 
 1. From which ip were the most requests?
 2. What is the most requested page?
 3. How many requests were there from each ip?
 4. What non-existent pages were clients referred to? 
-5. 5. What time did site get the most requests?
+5. What time did site get the most requests?
 6. What search bots have accessed the site? (UA + IP)
 
 ```bash
@@ -123,3 +123,73 @@ case $1 in
 esac
 ```
 ![screen2](https://github.com/d-SAVCHUK/EPAM_DevOps_HT_Linux_Bash/blob/main/task%202/Screenshot.png)
+
+# Task 3. Create a data backup script that takes the following data as parameters:
+
+1. Path to the syncing directory.
+2. The path to the directory where the copies of the files will be stored.
+
+```bash
+#!/bin/bash
+
+#HT #3 Dmytro SAVCHUK
+
+# Display a message indicating that the script is checking the internet status
+echo "Checking internet status..."
+
+# Use the 'ping' command to check if a website is reachable
+if ping -c 1 google.com; then
+    echo "Internet is up"
+    # Create the "Current" directory if it does not exist
+    if [ ! -d "Current" ]; then
+        mkdir "Current"
+    fi
+    # Save the internet status to a text file in the Current folder with a timestamp in the filename
+    echo "UP" > Current/status_$(date +"%Y-%m-%d_%T").txt
+else
+    echo "Internet is down"
+    # Create the "Current" directory if it does not exist
+    if [ ! -d "Current" ]; then
+        mkdir "Current"
+    fi
+    # Save the internet status to a text file in the Current folder with a timestamp in the filename
+    echo "DOWN" > Current/status_$(date +"%Y-%m-%d_%T").txt
+fi
+
+# Create the "BackUp Folder" directory if it does not exist
+if [ ! -d "BackUp" ]; then
+    mkdir "BackUp"
+fi
+
+# Store the current date and time in a variable
+now=$(date +"%Y-%m-%d %T")
+
+# Set the path to the syncing directory as "Current"
+syncing_dir="Current"
+
+# Set the path to the backup directory as "BackUp Folder"
+backup_dir="BackUp"
+
+# Copy all files from the syncing directory to the backup directory
+rsync -av --ignore-existing $syncing_dir $backup_dir
+
+# Find any new files in the syncing directory and add them to the log file
+for file in $(find $syncing_dir -type f); do
+    if ! [ -e "$backup_dir/$file" ]; then
+        echo "$now, ADDED, $file" >> log.txt
+    fi
+done
+
+# Find any deleted files in the backup directory and add them to the log file
+for file in $(find $backup_dir -type f); do
+    if ! [ -e "$syncing_dir/$file" ]; then
+        echo "$now, DELETED, $file" >> log.txt
+    fi
+done
+
+# Display instructions on how to activate crontab
+echo "To run this script every minute add the following command to your crontab:"
+echo "* * * * * /path/to/script3.sh"
+echo "example: * * * * * /Desktop/script3.sh"
+```
+![screen3](https://github.com/d-SAVCHUK/EPAM_DevOps_HT_Linux_Bash/blob/main/task%203/Screenshot.png)
