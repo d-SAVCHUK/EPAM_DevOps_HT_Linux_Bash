@@ -54,5 +54,5 @@ while [ $# -gt 0 ]; do
     esac
 done
 ```
-[!screen](task 1/Screenshot.png)
+[!screen](https://github.com/d-SAVCHUK/EPAM_DevOps_HT_Linux_Bash/blob/main/task%201/Screenshot.png)
 
